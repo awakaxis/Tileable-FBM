@@ -1,6 +1,7 @@
 import math
 from random import Random, random
 
+import matplotlib.pyplot as plt
 random = Random()
 # for x in range(0, sizeX):
 #     for y in range(0, sizeY):
@@ -63,3 +64,34 @@ gridSizeX = 10
 gridSizeY = 10
 for i in range(0, int((gridSizeX + 1) * (gridSizeY + 1))):
     dirs.append(randGradVector(random))
+
+
+def plotGradientVectors(dirs: list):
+    fig, ax = plt.subplots()
+    ax.set_xlim(0, gridSizeX)
+    ax.set_ylim(0, gridSizeY)
+    ax.set_aspect("equal")
+
+    ax.set_xticks(range(0, gridSizeX + 1))
+    ax.set_yticks(range(0, gridSizeY + 1))
+
+    ax.grid(True)
+
+    for i, dir in enumerate(dirs):
+        ax.quiver(
+            i % gridSizeY,
+            i / gridSizeX,
+            dir[0],
+            dir[1],
+            angles="xy",
+            scale_units="xy",
+            scale=1,
+            width=0.005,
+            headwidth=0.005,
+            headlength=0.01,
+        )
+
+    plt.show()
+
+
+# plotGradientVectors(dirs)

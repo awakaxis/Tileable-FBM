@@ -2,7 +2,14 @@ import math
 from random import Random, random
 
 import matplotlib.pyplot as plt
+from PIL import Image
+
 random = Random()
+img = Image.new(mode="L", size=(1920, 1080))
+
+sizeX, sizeY = img.size
+
+
 # for x in range(0, sizeX):
 #     for y in range(0, sizeY):
 #         gridX = x / 10
@@ -151,3 +158,17 @@ def perlin(x: int, y: int, dirs: list):
     highLerp = lerp(dot3, dot4, bettersmoothstep(fracX))
     noiseValue = lerp(lowLerp, highLerp, bettersmoothstep(fracY))
     return noiseValue
+
+
+for x in range(0, sizeX):
+    for y in range(0, sizeY):
+        octaves = 10
+        fbm = 0
+        for octave in range(0, octaves + 1):
+            fbm += perlin(
+                x * (2**octave), y * (2**octave), dirs * (2**octave)
+            ) * (0.5**octave)
+
+        img.putpixel(xy=(x, y), value=int((fbm + 1) * 0.5 * 255))
+
+img.show()

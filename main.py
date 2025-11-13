@@ -1,3 +1,7 @@
+import math
+from random import Random, random
+
+random = Random()
 # for x in range(0, sizeX):
 #     for y in range(0, sizeY):
 #         gridX = x / 10
@@ -45,3 +49,17 @@
 #         noiseValue = upperLerp + (gridY - minGradientY) * (lowerLerp - upperLerp)
 #         print(noiseValue)
 #         img.putpixel(xy=(x, y), value=int((noiseValue + 1) * 0.5 * 255))
+
+
+def randGradVector(random: Random):
+    theta = math.acos(2.0 * random.random() - 1)
+    phi = 2.0 * random.random() * math.pi
+
+    return (math.cos(phi) * math.sin(theta), math.sin(phi) * math.sin(theta))
+
+
+dirs = []
+gridSizeX = 10
+gridSizeY = 10
+for i in range(0, int((gridSizeX + 1) * (gridSizeY + 1))):
+    dirs.append(randGradVector(random))

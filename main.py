@@ -95,3 +95,15 @@ def plotGradientVectors(dirs: list):
 
 
 # plotGradientVectors(dirs)
+
+
+def lerp(left, right, factor):
+    return left + factor * (right - left)
+
+
+def smoothstep(x):
+    return (3 * (x**2)) - (2 * (x**3))
+
+
+def bettersmoothstep(x):
+    return (6 * x**5) - (15 * x**4) + (10 * x**3)

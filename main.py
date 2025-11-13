@@ -107,3 +107,47 @@ def smoothstep(x):
 
 def bettersmoothstep(x):
     return (6 * x**5) - (15 * x**4) + (10 * x**3)
+
+
+def perlin(x: int, y: int, dirs: list):
+    gridX = x * (gridSizeX / sizeX)
+    gridY = y * (gridSizeY / sizeY)
+
+    floorGridX = math.floor(gridX)
+    floorGridY = math.floor(gridY)
+
+    fracX = gridX - floorGridX
+    fracY = gridY - floorGridY
+
+    # print(f"x: {x}")
+    # print(f"y: {y}")
+    # print(f"gridX: {gridX}")
+    # print(f"gridY: {gridY}")
+
+    # unit gradient vectors for the corners (vertices) of the grid space the sampled pixel falls within
+    grad1, grad2, grad3, grad4 = (
+        dirs[(floorGridY * gridSizeX) + floorGridX],
+        dirs[(floorGridY * gridSizeX) + floorGridX + 1],
+        dirs[((floorGridY + 1) * gridSizeX) + floorGridX],
+        dirs[((floorGridY + 1) * gridSizeX) + floorGridX + 1],
+    )
+
+    # distance vectors pointing from each grid vertex to the position of the sampled pixel
+    dist1, dist2, dist3, dist4 = (
+        (gridX - floorGridX, gridY - floorGridY),
+        (gridX - (floorGridX + 1), gridY - floorGridY),
+        (gridX - floorGridX, gridY - (floorGridY + 1)),
+        (gridX - (floorGridX + 1), gridY - (floorGridY + 1)),
+    )
+
+    # dot products of each gradient vector and it's respective distance vector to the sampled pixel
+    dot1, dot2, dot3, dot4 = (
+        (grad1[0] * dist1[0]) + (grad1[1] * dist1[1]),
+        (grad2[0] * dist2[0]) + (grad2[1] * dist2[1]),
+        (grad3[0] * dist3[0]) + (grad3[1] * dist3[1]),
+        (grad4[0] * dist4[0]) + (grad4[1] * dist4[1]),
+    )
+    lowLerp = lerp(dot1, dot2, bettersmoothstep(fracX))
+    highLerp = lerp(dot3, dot4, bettersmoothstep(fracX))
+    noiseValue = lerp(lowLerp, highLerp, bettersmoothstep(fracY))
+    return noiseValue

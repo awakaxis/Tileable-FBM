@@ -6,22 +6,19 @@ from PIL import Image
 
 random = Random()
 img = Image.new(mode="L", size=(1920, 1080))
+import util
 
 sizeX, sizeY = img.size
 
 
-def randGradVector(random: Random):
+@util.Memoize
+def randGradVector(x, y):
+    random = Random()
+    random.seed(hash(f"{x},{y}"))
     theta = math.acos(2.0 * random.random() - 1)
     phi = 2.0 * random.random() * math.pi
 
     return (math.cos(phi) * math.sin(theta), math.sin(phi) * math.sin(theta))
-
-
-dirs = []
-gridSizeX = 10
-gridSizeY = 10
-for i in range(0, int((gridSizeX + 1) * (gridSizeY + 1))):
-    dirs.append(randGradVector(random))
 
 
 def plotGradientVectors(dirs: list):

@@ -21,37 +21,6 @@ def randGradVector(x, y):
     return (math.cos(phi) * math.sin(theta), math.sin(phi) * math.sin(theta))
 
 
-def plotGradientVectors(dirs: list):
-    fig, ax = plt.subplots()
-    ax.set_xlim(0, gridSizeX)
-    ax.set_ylim(0, gridSizeY)
-    ax.set_aspect("equal")
-
-    ax.set_xticks(range(0, gridSizeX + 1))
-    ax.set_yticks(range(0, gridSizeY + 1))
-
-    ax.grid(True)
-
-    for i, dir in enumerate(dirs):
-        ax.quiver(
-            i % gridSizeY,
-            i / gridSizeX,
-            dir[0],
-            dir[1],
-            angles="xy",
-            scale_units="xy",
-            scale=1,
-            width=0.005,
-            headwidth=0.005,
-            headlength=0.01,
-        )
-
-    plt.show()
-
-
-# plotGradientVectors(dirs)
-
-
 def lerp(left, right, factor):
     return left + factor * (right - left)
 

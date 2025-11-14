@@ -8,6 +8,8 @@ import util
 
 color = False
 sizeX, sizeY = 1920, 1080
+gridSize = 10
+
 # seems to cause a noticeable decrease in the program's speed
 log_progress = False
 

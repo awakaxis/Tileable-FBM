@@ -33,9 +33,9 @@ def bettersmoothstep(x):
     return (6 * x**5) - (15 * x**4) + (10 * x**3)
 
 
-def perlin(x: int, y: int, dirs: list):
-    gridX = x * (gridSizeX / sizeX)
-    gridY = y * (gridSizeY / sizeY)
+def perlin(x: int, y: int, gridRatioX, gridRatioY, period):
+    gridX = x * gridRatioX
+    gridY = y * gridRatioY
 
     floorGridX = math.floor(gridX)
     floorGridY = math.floor(gridY)
@@ -50,10 +50,10 @@ def perlin(x: int, y: int, dirs: list):
 
     # unit gradient vectors for the corners (vertices) of the grid space the sampled pixel falls within
     grad1, grad2, grad3, grad4 = (
-        dirs[(floorGridY * gridSizeX) + floorGridX],
-        dirs[(floorGridY * gridSizeX) + floorGridX + 1],
-        dirs[((floorGridY + 1) * gridSizeX) + floorGridX],
-        dirs[((floorGridY + 1) * gridSizeX) + floorGridX + 1],
+        randGradVector(floorGridX, floorGridY),
+        randGradVector((floorGridX + 1) % period, floorGridY),
+        randGradVector(floorGridX, (floorGridY + 1) % period),
+        randGradVector((floorGridX + 1) % period, (floorGridY + 1) % period),
     )
 
     # distance vectors pointing from each grid vertex to the position of the sampled pixel

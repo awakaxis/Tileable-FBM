@@ -77,15 +77,18 @@ def perlin(x: int, y: int, gridRatioX, gridRatioY, period):
     return noiseValue
 
 
+def fbm(x, y, tilecount, octaves, period):
+    fbm = 0
+    for octave in range(0, octaves + 1):
+        fbm += perlin(
+            (x % (sizeX / tilecount)) * (2**octave),
+            (y % (sizeY / tilecount)) * (2**octave),
+            period / (sizeX / tilecount),
+            period / (sizeY / tilecount),
+            (period * 2**octave),
+        ) * (0.5**octave)
+    return fbm
 for x in range(0, sizeX):
     for y in range(0, sizeY):
-        octaves = 10
-        fbm = 0
-        for octave in range(0, octaves + 1):
-            fbm += perlin(
-                x * (2**octave), y * (2**octave), dirs * (2**octave)
-            ) * (0.5**octave)
-
-        img.putpixel(xy=(x, y), value=int((fbm + 1) * 0.5 * 255))
 
 img.show()

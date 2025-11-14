@@ -3,10 +3,15 @@ from random import Random
 
 from PIL import Image
 
-img = Image.new(mode="L", size=(1920, 1080))
 import util
 
-sizeX, sizeY = img.size
+color = False
+sizeX, sizeY = 1920, 1080
+img = None
+if color:
+    img = Image.new(mode="RGB", size=(sizeX, sizeY))
+else:
+    img = Image.new(mode="L", size=(sizeX, sizeY))
 
 
 @util.Memoize
@@ -88,5 +93,22 @@ def fbm(x, y, tilecount, octaves, period):
     return fbm
 for x in range(0, sizeX):
     for y in range(0, sizeY):
+        val = (fbm(x, y, 1, 4, gridSize) + 1) * 0.5
+        if color:
+            startcolor = (129, 207, 244)
+            endcolor = (213, 213, 213)
+            img.putpixel(
+                xy=(x, y),
+                value=(
+                    int(lerp(startcolor[0], endcolor[0], val)),
+                    int(lerp(startcolor[1], endcolor[1], val)),
+                    int(lerp(startcolor[2], endcolor[2], val)),
+                ),
+            )
+        else:
+            img.putpixel(
+                xy=(x, y),
+                value=int(val * 255),
+            )
 
 img.show()

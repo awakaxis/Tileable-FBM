@@ -1,4 +1,5 @@
 import math
+import sys
 from random import Random
 
 from PIL import Image
@@ -7,6 +8,9 @@ import util
 
 color = False
 sizeX, sizeY = 1920, 1080
+# seems to cause a noticeable decrease in the program's speed
+log_progress = False
+
 img = None
 if color:
     img = Image.new(mode="RGB", size=(sizeX, sizeY))
@@ -91,6 +95,13 @@ def fbm(x, y, tilecount, octaves, period):
             (period * 2**octave),
         ) * (0.5**octave)
     return fbm
+
+
+if log_progress:
+    sys.stdout.write("\033[?25l")
+    sys.stdout.flush()
+    size = sizeX * sizeY
+
 for x in range(0, sizeX):
     for y in range(0, sizeY):
         val = (fbm(x, y, 1, 4, gridSize) + 1) * 0.5
@@ -110,5 +121,16 @@ for x in range(0, sizeX):
                 xy=(x, y),
                 value=int(val * 255),
             )
+
+        if log_progress:
+            sys.stdout.write(
+                f"\rProgress: {round(((x * sizeY) + y) / (size) * 100, 2)}%   "
+            )
+            sys.stdout.flush()
+
+if log_progress:
+    sys.stdout.write("\033[?25h")
+    sys.stdout.flush()
+    print()
 
 img.show()

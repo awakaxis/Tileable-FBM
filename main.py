@@ -1,10 +1,8 @@
 import math
-from random import Random, random
+from random import Random
 
-import matplotlib.pyplot as plt
 from PIL import Image
 
-random = Random()
 img = Image.new(mode="L", size=(1920, 1080))
 import util
 
